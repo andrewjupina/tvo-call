@@ -1,8 +1,9 @@
 import React from 'react';
+import MyCalendar from './MyCalendar';
 
 function HomeScreen() {
   return (
-    <h1>Home Screen</h1>
+    <MyCalendar />
   )
 }
 
