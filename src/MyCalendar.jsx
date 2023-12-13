@@ -16,6 +16,7 @@ const MyCalendar = () => {
   useEffect(() => {
     const getEvents = async () => {
       const fetchedEvents = await fetchEvents();
+      console.log('Fetched Events:', fetchedEvents); // Debugging line
       setEvents(fetchedEvents);
     };
 
@@ -33,4 +34,5 @@ const MyCalendar = () => {
 };
 
 export default MyCalendar;
+
 
