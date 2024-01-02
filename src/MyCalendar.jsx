@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import moment from 'moment';
 import fetchEvents from './fetchEvents'; // Adjust the path as necessary
+import fetchUnavailable from './fetchUnavailable';
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -11,28 +12,55 @@ const DnDCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
 
 const MyCalendar = () => {
-  const [events, setEvents] = useState([]);
+  const [allData, setAllData] = useState([]);
 
   useEffect(() => {
-    const getEvents = async () => {
+    const fetchData = async () => {
       const fetchedEvents = await fetchEvents();
-      console.log('Fetched Events:', fetchedEvents); // Debugging line
-      setEvents(fetchedEvents);
+      console.log('Fetched Events:', fetchedEvents);
+      const fetchedUnavailable = await fetchUnavailable();
+      console.log('Fetched Unavailable:', fetchedUnavailable); // Debugging line
+
+      // Add an identifier to each item
+      const combinedData = [
+        ...fetchedEvents.map(event => ({ ...event, type: 'event' })),
+        ...fetchedUnavailable.map(item => ({ ...item, type: 'unavailable' })),
+      ];
+
+      setAllData(combinedData);
     };
 
-    getEvents();
+    fetchData();
   }, []);
+
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    let style = {
+      backgroundColor: '#3174ad',
+      borderRadius: '0px',
+      opacity: 0.8,
+      color: 'white',
+      border: '0px',
+      display: 'block'
+    };
+
+    if (event.type === 'unavailable') {
+      style.backgroundColor = 'red';
+    }
+
+    return {
+      style: style
+    };
+  }
 
   return (
     <DnDCalendar
       localizer={localizer}
-      events={events}
-      // ... other props
+      events={allData}
       style={{ height: "100vh" }}
+      eventPropGetter={eventStyleGetter}
     />
   );
 };
 
 export default MyCalendar;
-
 
