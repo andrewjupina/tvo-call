@@ -21,10 +21,10 @@ const fetchEvents = async () => {
       }
 
       return {
-        title: data.name.join(', '),
+        title: "Unavailable: \n" + data.name.join(', '),
         start: startDate,
         end: endDate,
-        allDay: true
+        allDay: true,
       };
     });
     return events;

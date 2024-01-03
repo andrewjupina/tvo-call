@@ -21,7 +21,7 @@ const fetchEvents = async () => {
       }
 
       return {
-        title: data.name,
+        title: `ER Call: ${data.name}`,
         start: startDate,
         end: endDate,
         allDay: true

@@ -7,6 +7,7 @@ import fetchUnavailable from './fetchUnavailable';
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import './App.css';
 
 const DnDCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
@@ -40,7 +41,11 @@ const MyCalendar = () => {
       opacity: 0.8,
       color: 'white',
       border: '0px',
-      display: 'block'
+      display: 'block',
+      whiteSpace: 'normal', // Ensures text wraps instead of staying in a single line
+      overflowWrap: 'break-word', // Breaks words to prevent overflow
+      lineHeight: '1.2', // Optional, adjusts line height for better readability
+      padding: '2px 5px'
     };
 
     if (event.type === 'unavailable') {
