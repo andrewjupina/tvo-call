@@ -41,3 +41,25 @@
   white-space: normal !important;
   overflow-wrap: break-word !important;
 }
+
+.user-initials {
+  background-color: #90ee90; /* Light green background */
+  color: black; /* Text color */
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px; /* Slightly rounded corners */
+  width: 50px; /* Fixed width */
+  height: 20px; /* Height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute; /* Positioned relative to its nearest positioned ancestor */
+  top: 10px; /* Distance from the top of the screen */
+  left: 10px; /* Distance from the left of the screen */
+}
+
+.calendar-container {
+  margin-top: 70px; /* Adjust this value based on the size of your initials box */
+}
+
+

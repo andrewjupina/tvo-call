@@ -18,9 +18,9 @@ const MyCalendar = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedEvents = await fetchEvents();
-      console.log('Fetched Events:', fetchedEvents);
+      // console.log('Fetched Events:', fetchedEvents);
       const fetchedUnavailable = await fetchUnavailable();
-      console.log('Fetched Unavailable:', fetchedUnavailable); // Debugging line
+      // console.log('Fetched Unavailable:', fetchedUnavailable); // Debugging line
 
       // Add an identifier to each item
       const combinedData = [
