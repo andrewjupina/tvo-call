@@ -14,6 +14,8 @@ const localizer = momentLocalizer(moment);
 
 const MyCalendar = () => {
   const [allData, setAllData] = useState([]);
+  const [selectedDays, setSelectedDays] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +35,7 @@ const MyCalendar = () => {
 
     fetchData();
   }, []);
+
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     let style = {
@@ -57,15 +60,43 @@ const MyCalendar = () => {
     };
   }
 
+  const onSelectSlot = (slotInfo) => {
+    const dateSelected = moment(slotInfo.start).format('YYYY-MM-DD');
+    setSelectedDays(prev => {
+      // Toggle the selected day
+      if (prev.includes(dateSelected)) {
+        return prev.filter(date => date !== dateSelected);
+      } else {
+        return [...prev, dateSelected];
+      }
+    })
+    console.log(selectedDays);
+    console.log(slotInfo);
+  };
+
+  const dayPropGetter = (date) => {
+    const dateString = moment(date).format('YYYY-MM-DD');
+    if (selectedDays.includes(dateString)) {
+      return {
+        style: {
+          backgroundColor: '#daf7a6', // Change to any color you prefer for selected days
+          color: 'black',
+        },
+      };
+    }
+  };
+
   return (
     <DnDCalendar
       localizer={localizer}
       events={allData}
       style={{ height: "100vh" }}
       eventPropGetter={eventStyleGetter}
+      selectable={true}
+      onSelectSlot={onSelectSlot}
+      dayPropGetter={dayPropGetter}
     />
   );
 };
 
 export default MyCalendar;
-
