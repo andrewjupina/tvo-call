@@ -19,4 +19,6 @@ const auth = getAuth(app);
 
 const firestore = getFirestore(app);
 
-export { auth, firestore };
+const user = auth.currentUser
+
+export { auth, firestore, user };

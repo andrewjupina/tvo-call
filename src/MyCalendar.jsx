@@ -4,6 +4,7 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import moment from 'moment';
 import fetchEvents from './fetchEvents'; // Adjust the path as necessary
 import fetchUnavailable from './fetchUnavailable';
+import { user } from './firebase';
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -72,6 +73,10 @@ const MyCalendar = () => {
     })
     console.log(selectedDays);
     console.log(slotInfo);
+    user.reload().then(() => {
+      // After reloading, the user object is updated.
+      console.log(user); // This should now reflect the updated displayName.
+    });
   };
 
   const dayPropGetter = (date) => {
@@ -96,7 +101,7 @@ const MyCalendar = () => {
       onSelectSlot={onSelectSlot}
       dayPropGetter={dayPropGetter}
     />
-  );
+);
 };
 
 export default MyCalendar;

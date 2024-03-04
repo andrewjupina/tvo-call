@@ -1,12 +1,13 @@
 import React from 'react';
 import MyCalendar from './MyCalendar';
-import UserInitials from './UserInitials';
+import LogoutButton from './LogoutButton';
+import UpdateDisplayName from './UpdateDisplayName';
 
 function HomeScreen() {
-  const userName = 'John Doe';
   return (
     <>
-      <UserInitials userName={userName}/>
+      <LogoutButton />
+      <UpdateDisplayName />
       <div className="calendar-container">
         <MyCalendar />
       </div>
