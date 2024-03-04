@@ -4,7 +4,8 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import moment from 'moment';
 import fetchEvents from './fetchEvents'; // Adjust the path as necessary
 import fetchUnavailable from './fetchUnavailable';
-import { user } from './firebase';
+import UnavailableSubmit from './UnavailableSubmit';
+import { getAuth } from "firebase/auth";
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -16,6 +17,8 @@ const localizer = momentLocalizer(moment);
 const MyCalendar = () => {
   const [allData, setAllData] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
+  const auth = getAuth();
+  const user = auth.currentUser;
 
 
   useEffect(() => {
@@ -62,26 +65,28 @@ const MyCalendar = () => {
   }
 
   const onSelectSlot = (slotInfo) => {
-    const dateSelected = moment(slotInfo.start).format('YYYY-MM-DD');
+    const startOfDayTimestamp = moment(slotInfo.start).startOf('day').valueOf(); // This gives you a Unix timestamp in milliseconds
+
     setSelectedDays(prev => {
-      // Toggle the selected day
-      if (prev.includes(dateSelected)) {
-        return prev.filter(date => date !== dateSelected);
+      // Check if the timestamp is already in the array
+      if (prev.includes(startOfDayTimestamp)) {
+        // If it is, remove it (deselect the day)
+        return prev.filter(timestamp => timestamp !== startOfDayTimestamp);
       } else {
-        return [...prev, dateSelected];
+        // Otherwise, add it to the array (select the day)
+        return [...prev, startOfDayTimestamp];
       }
-    })
+    });
     console.log(selectedDays);
     console.log(slotInfo);
-    user.reload().then(() => {
-      // After reloading, the user object is updated.
-      console.log(user); // This should now reflect the updated displayName.
-    });
   };
 
   const dayPropGetter = (date) => {
-    const dateString = moment(date).format('YYYY-MM-DD');
-    if (selectedDays.includes(dateString)) {
+    // Convert the date to the start of the day's timestamp to match the selection logic
+    const startOfDayTimestamp = moment(date).startOf('day').valueOf();
+
+    // Now, check if this timestamp is included in your selectedDays array
+    if (selectedDays.includes(startOfDayTimestamp)) {
       return {
         style: {
           backgroundColor: '#daf7a6', // Change to any color you prefer for selected days
@@ -91,16 +96,23 @@ const MyCalendar = () => {
     }
   };
 
+
   return (
-    <DnDCalendar
-      localizer={localizer}
-      events={allData}
-      style={{ height: "100vh" }}
-      eventPropGetter={eventStyleGetter}
-      selectable={true}
-      onSelectSlot={onSelectSlot}
-      dayPropGetter={dayPropGetter}
-    />
+    <div>
+      <DnDCalendar
+        localizer={localizer}
+        events={allData}
+        style={{ height: "100vh" }}
+        eventPropGetter={eventStyleGetter}
+        selectable={true}
+        onSelectSlot={onSelectSlot}
+        dayPropGetter={dayPropGetter}
+      />
+      <UnavailableSubmit
+        selectedDays={selectedDays}
+        displayName={user.displayName}
+      />
+    </div>
 );
 };
 
