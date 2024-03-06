@@ -8,7 +8,7 @@ const updateFirestoreDocuments = async (timestamps, userDisplayName) => {
     // Convert the Unix timestamp (milliseconds) to a Firestore Timestamp
     // Assuming your timestamps represent the start of the day in UTC
     const startOfDayTimestamp = Timestamp.fromMillis(timestamp);
-    const docRef = await addDoc(collection(firestore, "test"), {
+    const docRef = await addDoc(collection(firestore, "unavailableRequests"), {
       start: startOfDayTimestamp,
       end: startOfDayTimestamp,
       name: userDisplayName

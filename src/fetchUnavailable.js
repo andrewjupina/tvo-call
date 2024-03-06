@@ -3,7 +3,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 const fetchEvents = async () => {
   try {
-    const eventsRef = collection(firestore, 'unavailable');
+    const eventsRef = collection(firestore, 'unavailableRequests');
     const snapshot = await getDocs(eventsRef);
     const events = snapshot.docs.map(doc => {
       const data = doc.data();
@@ -21,7 +21,7 @@ const fetchEvents = async () => {
       }
 
       return {
-        title: "Unavailable: \n" + data.name.join(', '),
+        title: "Unavailable: \n" + data.name,
         start: startDate,
         end: endDate,
         allDay: true,

@@ -20,23 +20,21 @@ const MyCalendar = () => {
   const auth = getAuth();
   const user = auth.currentUser;
 
+  const fetchData = async () => {
+    const fetchedEvents = await fetchEvents();
+    const fetchedUnavailable = await fetchUnavailable();
+
+    const combinedData = [
+      ...fetchedEvents.map(event => ({ ...event, type: 'event' })),
+      ...fetchedUnavailable.map(item => ({ ...item, type: 'unavailable' })),
+    ];
+
+    setAllData(combinedData);
+    setSelectedDays([]);
+  };
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedEvents = await fetchEvents();
-      // console.log('Fetched Events:', fetchedEvents);
-      const fetchedUnavailable = await fetchUnavailable();
-      // console.log('Fetched Unavailable:', fetchedUnavailable); // Debugging line
-
-      // Add an identifier to each item
-      const combinedData = [
-        ...fetchedEvents.map(event => ({ ...event, type: 'event' })),
-        ...fetchedUnavailable.map(item => ({ ...item, type: 'unavailable' })),
-      ];
-
-      setAllData(combinedData);
-    };
-
     fetchData();
   }, []);
 
@@ -111,6 +109,7 @@ const MyCalendar = () => {
       <UnavailableSubmit
         selectedDays={selectedDays}
         displayName={user.displayName}
+        onSubmit={fetchData}
       />
     </div>
 );
