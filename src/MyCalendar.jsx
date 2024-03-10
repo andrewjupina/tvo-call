@@ -24,7 +24,7 @@ const MyCalendar = () => {
     const fetchedEvents = await fetchEvents();
     const fetchedUnavailable = await fetchUnavailable();
 
-    const combinedData = [
+    let combinedData = [
       ...fetchedEvents.map(event => ({ ...event, type: 'event' })),
       ...fetchedUnavailable.map(item => ({ ...item, type: 'unavailable' })),
     ];

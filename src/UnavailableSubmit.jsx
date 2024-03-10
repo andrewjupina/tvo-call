@@ -1,11 +1,13 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import updateFirestoreDocs from './updateFirestoreDocs';
+import updateDocumentByTimestamp from './updateDocumentByTimestamp';
 
 const UnavailableSubmit = ({ selectedDays, displayName, onSubmit }) => {
   const handleUpdateClick = async () => {
     if (selectedDays.length > 0) {
-      await updateFirestoreDocs(selectedDays, displayName)
+      // await updateFirestoreDocs(selectedDays, displayName)
+      await updateDocumentByTimestamp(selectedDays, displayName)
         .then(() => {
           if (onSubmit) {
             onSubmit(); // Call the fetch data function after Firestore update
