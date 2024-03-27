@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import updateFirestoreDocs from './updateFirestoreDocs';
 import updateDocumentByTimestamp from './updateDocumentByTimestamp';
 
 const UnavailableSubmit = ({ selectedDays, displayName, onSubmit }) => {

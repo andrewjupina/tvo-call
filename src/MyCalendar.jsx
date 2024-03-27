@@ -5,6 +5,7 @@ import moment from 'moment';
 import fetchEvents from './fetchEvents'; // Adjust the path as necessary
 import fetchUnavailable from './fetchUnavailable';
 import UnavailableSubmit from './UnavailableSubmit';
+import EventEditForm from './EventEditForm';
 import { getAuth } from "firebase/auth";
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
@@ -17,6 +18,8 @@ const localizer = momentLocalizer(moment);
 const MyCalendar = () => {
   const [allData, setAllData] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -37,6 +40,22 @@ const MyCalendar = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleEventSelect = (event) => {
+    setSelectedEvent(event);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSave = (updatedEvent) => {
+    // Here, you would handle updating the event information in your events state
+    console.log("Save changes to event:", updatedEvent);
+    // For simplicity, this example logs the updated event. Implement the logic to update your state or backend here.
+    setOpen(false);
+  };
 
 
   const eventStyleGetter = (event, start, end, isSelected) => {
@@ -105,11 +124,18 @@ const MyCalendar = () => {
         selectable={true}
         onSelectSlot={onSelectSlot}
         dayPropGetter={dayPropGetter}
+        onSelectEvent={handleEventSelect}
       />
       <UnavailableSubmit
         selectedDays={selectedDays}
         displayName={user.displayName}
         onSubmit={fetchData}
+      />
+      <EventEditForm
+        open={open}
+        handleClose={handleClose}
+        event={selectedEvent}
+        handleSave={handleSave}
       />
     </div>
 );
